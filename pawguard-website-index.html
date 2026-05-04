@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PawGuard — The Ultimate Dog Health Companion</title>
+<meta name="description" content="Track your dog's health, decode symptoms and get AI-powered nutrition advice. The all-in-one companion for dog owners who care.">
+<meta property="og:title" content="PawGuard — The Ultimate Dog Health Companion">
+<meta property="og:description" content="Track meals, symptoms, behaviour and health trends in real time. Built for dog parents who go the extra mile.">
+<meta property="og:image" content="https://zamani-pawguard.github.io/pawguard/og-image.png">
+<meta property="og:url" content="https://zamani-pawguard.github.io/pawguard/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bark:#3D2408;--bark2:#5C3D1E;--bark3:#8B5E3C;
+  --amber:#E8A020;--amber-l:#FDF3E3;--amber-d:#7A4F0A;
+  --teal:#2A7A6F;--teal-l:#E0F2EF;
+  --cream:#FDFAF5;--white:#ffffff;
+  --text:#1E0F00;--muted:#7A5C3E;--light:#C4A882;
+  --border:rgba(92,61,30,0.12);
+  --red:#C0392B;--green:#27AE60;--green-l:#E8F8EE;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(253,250,245,0.92);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);padding:0 5vw;}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;height:64px;gap:32px;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{width:36px;height:36px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:20px;color:var(--bark);font-weight:600;}
+.nav-links{display:flex;gap:24px;margin-left:auto;align-items:center;}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:14px;font-weight:400;transition:color 0.2s;}
+.nav-links a:hover{color:var(--bark);}
+.nav-cta{background:var(--bark);color:#fff!important;padding:8px 20px;border-radius:24px;font-weight:500!important;transition:background 0.2s!important;}
+.nav-cta:hover{background:var(--amber)!important;}
+.nav-mobile-toggle{display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--bark);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:100px 5vw 60px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 40%, rgba(232,160,32,0.08) 0%, transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--amber-l);border:0.5px solid rgba(232,160,32,0.4);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--amber-d);font-weight:500;letter-spacing:0.5px;margin-bottom:24px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,58px);font-weight:700;line-height:1.15;color:var(--bark);margin-bottom:20px;}
+.hero h1 em{font-style:normal;color:var(--amber);}
+.hero-sub{font-size:17px;color:var(--muted);line-height:1.75;margin-bottom:36px;max-width:480px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:30px;font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;}
+.btn-primary{background:var(--bark);color:#fff;}
+.btn-primary:hover{background:var(--amber);transform:translateY(-1px);}
+.btn-secondary{background:transparent;color:var(--bark);border:1.5px solid var(--border);}
+.btn-secondary:hover{border-color:var(--amber);color:var(--amber);}
+.btn-amber{background:var(--amber);color:#fff;}
+.btn-amber:hover{background:var(--amber-d);transform:translateY(-1px);}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-teal:hover{background:#1E5C53;transform:translateY(-1px);}
+.hero-proof{display:flex;gap:32px;flex-wrap:wrap;}
+.proof-stat{text-align:center;}
+.proof-num{font-family:'Playfair Display',serif;font-size:30px;color:var(--bark);font-weight:700;}
+.proof-label{font-size:12px;color:var(--light);letter-spacing:0.3px;margin-top:2px;}
+.hero-visual{position:relative;}
+.hero-app-card{background:#fff;border:0.5px solid var(--border);border-radius:20px;padding:24px;box-shadow:0 20px 60px rgba(92,61,30,0.1);}
+.app-score-row{display:flex;align-items:center;gap:16px;background:var(--bark);border-radius:14px;padding:16px 20px;margin-bottom:16px;}
+.score-circle{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(126,229,192,0.5);}
+.score-num{font-family:'Playfair Display',serif;font-size:22px;color:#7FE5C0;font-weight:700;line-height:1;}
+.score-label-s{font-size:8px;color:rgba(255,255,255,0.5);letter-spacing:0.5px;}
+.app-dog-name{font-family:'Playfair Display',serif;font-size:18px;color:#fff;}
+.app-dog-meta{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px;}
+.app-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.app-metric{background:var(--cream);border-radius:10px;padding:12px;border:0.5px solid var(--border);}
+.app-metric-icon{font-size:16px;margin-bottom:4px;}
+.app-metric-label{font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:0.5px;}
+.app-metric-val{font-size:16px;font-weight:500;color:var(--bark);margin-top:1px;}
+.app-pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:8px;margin-top:3px;font-weight:500;}
+.pill-g{background:var(--green-l);color:#1A7A40;}
+.pill-a{background:var(--amber-l);color:var(--amber-d);}
+.app-store-row{display:flex;gap:8px;margin-top:16px;}
+.store-badge{flex:1;background:var(--bark);border-radius:10px;padding:10px 12px;text-decoration:none;display:flex;align-items:center;gap:8px;transition:background 0.2s;}
+.store-badge:hover{background:var(--amber);}
+.store-icon{font-size:20px;}
+.store-text-s{font-size:9px;color:rgba(255,255,255,0.6);}
+.store-text-b{font-size:13px;color:#fff;font-weight:500;line-height:1.2;}
+.floating-badge{position:absolute;background:#fff;border:0.5px solid var(--border);border-radius:12px;padding:10px 14px;font-size:12px;box-shadow:0 8px 24px rgba(92,61,30,0.1);}
+.fb1{top:-20px;right:-20px;}
+.fb2{bottom:60px;left:-30px;}
+.fb-icon{font-size:18px;margin-bottom:4px;}
+.fb-label{font-weight:500;color:var(--bark);font-size:12px;}
+.fb-sub{color:var(--muted);font-size:11px;}
+
+/* PAIN SECTION */
+.section{padding:80px 5vw;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:12px;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,40px);font-weight:600;color:var(--bark);margin-bottom:12px;line-height:1.25;}
+.section-sub{font-size:15px;color:var(--muted);max-width:560px;line-height:1.75;margin-bottom:48px;}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+.pain-card{background:#fff;border:0.5px solid var(--border);border-radius:16px;padding:24px;transition:border-color 0.2s,transform 0.2s;}
+.pain-card:hover{border-color:var(--amber);transform:translateY(-2px);}
+.pain-icon{font-size:28px;margin-bottom:12px;}
+.pain-title{font-weight:500;font-size:15px;margin-bottom:6px;color:var(--bark);}
+.pain-text{font-size:13.5px;color:var(--muted);line-height:1.65;}
+
+/* FEATURES */
+.features-bg{background:#fff;padding:80px 5vw;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+.feat-card{border:0.5px solid var(--border);border-radius:16px;padding:24px;background:var(--cream);transition:all 0.2s;}
+.feat-card:hover{background:#fff;border-color:var(--amber);transform:translateY(-2px);}
+.feat-tag{display:inline-block;font-size:10px;letter-spacing:1px;text-transform:uppercase;background:var(--amber-l);color:var(--amber-d);padding:3px 10px;border-radius:10px;margin-bottom:14px;font-weight:500;}
+.feat-icon{font-size:28px;margin-bottom:10px;}
+.feat-title{font-weight:500;font-size:15px;margin-bottom:8px;color:var(--bark);}
+.feat-desc{font-size:13.5px;color:var(--muted);line-height:1.65;}
+
+/* DOWNLOAD SECTION */
+.download-section{background:var(--bark);padding:80px 5vw;}
+.download-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.download-title{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,42px);color:#fff;font-weight:700;margin-bottom:16px;}
+.download-sub{font-size:15px;color:rgba(255,255,255,0.65);line-height:1.75;margin-bottom:36px;}
+.store-btns{display:flex;flex-direction:column;gap:12px;max-width:280px;}
+.store-btn-big{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:16px 20px;text-decoration:none;transition:all 0.2s;}
+.store-btn-big:hover{background:var(--amber);border-color:var(--amber);}
+.store-btn-icon{font-size:28px;}
+.store-btn-text{color:#fff;}
+.store-btn-small{font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:2px;}
+.store-btn-big-label{font-size:17px;font-weight:500;}
+.download-visual{display:flex;flex-direction:column;gap:12px;}
+.download-feat{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 18px;}
+.df-icon{font-size:22px;flex-shrink:0;}
+.df-text{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;}
+.df-text strong{color:#fff;display:block;font-weight:500;}
+
+/* PRICING */
+.pricing-section{padding:80px 5vw;}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:860px;margin:0 auto;}
+.price-card{border:0.5px solid var(--border);border-radius:18px;padding:28px;background:#fff;text-align:center;transition:all 0.2s;}
+.price-card:hover{border-color:var(--amber);transform:translateY(-2px);}
+.price-card.featured{border:2px solid var(--amber);position:relative;overflow:visible;}
+.featured-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--amber);color:#fff;font-size:11px;font-weight:500;padding:4px 16px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;}
+.price-name{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-weight:500;}
+.price-amount{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:var(--bark);line-height:1;}
+.price-period{font-size:13px;color:var(--light);margin-bottom:4px;}
+.price-trial{font-size:12px;color:var(--teal);font-weight:500;margin-bottom:20px;}
+.price-divider{height:0.5px;background:var(--border);margin:20px 0;}
+.price-features{list-style:none;text-align:left;display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.price-features li{display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:var(--muted);}
+.price-features li::before{content:'✓';color:var(--teal);font-weight:700;flex-shrink:0;margin-top:1px;}
+.price-features li.disabled{color:var(--light);}
+.price-features li.disabled::before{content:'×';color:var(--light);}
+.price-btn{width:100%;padding:12px;border-radius:30px;font-size:14px;font-weight:500;text-decoration:none;display:block;text-align:center;transition:all 0.2s;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;}
+.pb-outline{background:transparent;color:var(--bark);border:1.5px solid var(--border);}
+.pb-outline:hover{border-color:var(--amber);color:var(--amber);}
+.pb-filled{background:var(--amber);color:#fff;}
+.pb-filled:hover{background:var(--amber-d);}
+.pb-dark{background:var(--bark);color:#fff;}
+.pb-dark:hover{background:var(--teal);}
+.guarantee{text-align:center;margin-top:28px;font-size:13px;color:var(--muted);}
+
+/* TESTIMONIALS */
+.testi-section{background:#fff;padding:80px 5vw;}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+.testi-card{border:0.5px solid var(--border);border-radius:16px;padding:22px;background:var(--cream);}
+.testi-stars{color:var(--amber);font-size:15px;margin-bottom:12px;letter-spacing:2px;}
+.testi-text{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:16px;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:10px;}
+.testi-avatar{width:32px;height:32px;border-radius:50%;background:var(--amber-l);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.testi-name{font-size:13px;font-weight:500;color:var(--bark);}
+.testi-breed{font-size:11px;color:var(--light);}
+
+/* PDF SECTION */
+.pdf-section{padding:80px 5vw;background:var(--cream);}
+.pdf-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.pdf-visual{background:#fff;border:0.5px solid var(--border);border-radius:18px;padding:28px;position:relative;}
+.pdf-cover{background:var(--bark);border-radius:12px;padding:24px;color:#fff;text-align:center;margin-bottom:16px;}
+.pdf-cover-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--amber);margin-bottom:4px;}
+.pdf-cover-sub{font-size:12px;color:rgba(255,255,255,0.6);}
+.pdf-pages{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pdf-page-thumb{background:var(--cream);border:0.5px solid var(--border);border-radius:8px;padding:10px;font-size:11px;color:var(--muted);}
+.pdf-page-title{font-size:10px;font-weight:500;color:var(--bark);margin-bottom:3px;}
+
+/* FAQ */
+.faq-section{padding:80px 5vw;background:#fff;}
+.faq-inner{max-width:720px;margin:0 auto;}
+.faq-item{border:0.5px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:border-color 0.2s;}
+.faq-item.open{border-color:var(--amber);}
+.faq-q{padding:18px 20px;font-size:15px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--bark);}
+.faq-q .toggle{width:24px;height:24px;border-radius:50%;background:var(--amber-l);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--amber-d);transition:transform 0.2s;flex-shrink:0;}
+.faq-item.open .toggle{transform:rotate(45deg);}
+.faq-a{padding:0 20px;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s;}
+.faq-a.open{padding:0 20px 18px;max-height:300px;}
+.faq-a p{font-size:14px;color:var(--muted);line-height:1.75;}
+
+/* FOOTER */
+footer{background:var(--bark);padding:48px 5vw 28px;}
+.footer-inner{max-width:1100px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-bottom:10px;}
+.footer-tagline{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;max-width:240px;}
+.footer-col h4{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:14px;font-weight:500;}
+.footer-col a{display:block;font-size:13.5px;color:rgba(255,255,255,0.6);text-decoration:none;margin-bottom:10px;transition:color 0.2s;}
+.footer-col a:hover{color:var(--amber);}
+.footer-bottom{border-top:0.5px solid rgba(255,255,255,0.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.3);}
+
+/* TIDIO NOTICE */
+.chat-notice{position:fixed;bottom:20px;right:20px;background:#fff;border:0.5px solid var(--border);border-radius:14px;padding:14px 18px;font-size:13px;box-shadow:0 8px 30px rgba(92,61,30,0.12);z-index:50;max-width:220px;display:none;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr;gap:40px;}
+  .hero-visual{display:none;}
+  .download-inner{grid-template-columns:1fr;}
+  .pdf-inner{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}
+  .nav-mobile-toggle{display:block;}
+  .hero{padding:90px 5vw 50px;}
+}
+@media(max-width:480px){
+  .hero-btns{flex-direction:column;}
+  .btn{justify-content:center;}
+  .hero-proof{gap:20px;}
+  .footer-top{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">🐾</div>
+      <span class="nav-logo-text">PawGuard</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#download">App</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank" class="nav-cta">Get started →</a>
+    </div>
+    <button class="nav-mobile-toggle" onclick="toggleMobileNav()">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">🐾 Now available — free 7-day trial</div>
+      <h1>The Dog Health Companion Your <em>Vet Doesn't Have Time</em> to Be</h1>
+      <p class="hero-sub">Track meals, symptoms, behaviour and health trends in real time. Get AI-powered guidance built specifically for your dog — all in one place, from $15/month.</p>
+      <div class="hero-btns">
+        <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank" class="btn btn-primary">Start free trial →</a>
+        <a href="#download" class="btn btn-secondary">Download the app ↓</a>
+      </div>
+      <div class="hero-proof">
+        <div class="proof-stat"><div class="proof-num">4,200+</div><div class="proof-label">Dog parents</div></div>
+        <div class="proof-stat"><div class="proof-num">4.9★</div><div class="proof-label">Avg rating</div></div>
+        <div class="proof-stat"><div class="proof-num">$0</div><div class="proof-label">To start</div></div>
+        <div class="proof-stat"><div class="proof-num">24/7</div><div class="proof-label">AI support</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div style="position:relative;padding:20px 20px 20px 30px;">
+        <div class="hero-app-card">
+          <div class="app-score-row">
+            <div class="score-circle">
+              <div class="score-num">87</div>
+              <div class="score-label-s">HEALTH</div>
+            </div>
+            <div>
+              <div class="app-dog-name">Max</div>
+              <div class="app-dog-meta">Golden Retriever · 4 yrs · 30 kg</div>
+            </div>
+          </div>
+          <div class="app-metrics">
+            <div class="app-metric">
+              <div class="app-metric-icon">🏃</div>
+              <div class="app-metric-label">Activity</div>
+              <div class="app-metric-val">6,240</div>
+              <div class="app-pill pill-g">On track</div>
+            </div>
+            <div class="app-metric">
+              <div class="app-metric-icon">🍗</div>
+              <div class="app-metric-label">Calories</div>
+              <div class="app-metric-val">840</div>
+              <div class="app-pill pill-a">1 meal left</div>
+            </div>
+            <div class="app-metric">
+              <div class="app-metric-icon">💧</div>
+              <div class="app-metric-label">Hydration</div>
+              <div class="app-metric-val">420ml</div>
+              <div class="app-pill pill-a">Needs water</div>
+            </div>
+            <div class="app-metric">
+              <div class="app-metric-icon">💊</div>
+              <div class="app-metric-label">Medication</div>
+              <div class="app-metric-val">✓ Done</div>
+              <div class="app-pill pill-g">Given today</div>
+            </div>
+          </div>
+          <div class="app-store-row">
+            <a href="#download" class="store-badge">
+              <div class="store-icon">🍎</div>
+              <div>
+                <div class="store-text-s">Download on the</div>
+                <div class="store-text-b">App Store</div>
+              </div>
+            </a>
+            <a href="#download" class="store-badge">
+              <div class="store-icon">▶</div>
+              <div>
+                <div class="store-text-s">Get it on</div>
+                <div class="store-text-b">Google Play</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="floating-badge fb1">
+          <div class="fb-icon">🩺</div>
+          <div class="fb-label">Symptom alert</div>
+          <div class="fb-sub">Monitor · Not urgent</div>
+        </div>
+        <div class="floating-badge fb2">
+          <div class="fb-icon">🔥</div>
+          <div class="fb-label">7-day streak!</div>
+          <div class="fb-sub">Keep it up</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN POINTS -->
+<section class="section">
+  <div class="section-inner">
+    <div class="eyebrow">The problem</div>
+    <div class="section-title">Dog owners are flying blind.</div>
+    <div class="section-sub">Vet visits are expensive. Pet Google is terrifying. Most apps just remind you to feed your dog. You deserve better.</div>
+    <div class="pain-grid">
+      <div class="pain-card"><div class="pain-icon">😰</div><div class="pain-title">2am symptom panic</div><div class="pain-text">"Is this serious or am I overreacting?" — a question no dog parent should face alone.</div></div>
+      <div class="pain-card"><div class="pain-icon">🍗</div><div class="pain-title">Diet confusion</div><div class="pain-text">Grain-free? Raw? Kibble? Which is actually right for YOUR dog's breed, age and weight?</div></div>
+      <div class="pain-card"><div class="pain-icon">💰</div><div class="pain-title">Surprise vet bills</div><div class="pain-text">Catching problems early costs a fraction of emergency care. Tracking makes that possible.</div></div>
+      <div class="pain-card"><div class="pain-icon">🧠</div><div class="pain-title">Behaviour mystery</div><div class="pain-text">Why is he suddenly anxious, destructive or refusing food? PawGuard spots the patterns.</div></div>
+      <div class="pain-card"><div class="pain-icon">📋</div><div class="pain-title">No health history</div><div class="pain-text">Can't remember the last vet visit, last vaccine or what medication was prescribed.</div></div>
+      <div class="pain-card"><div class="pain-icon">🔍</div><div class="pain-title">One-size advice</div><div class="pain-text">Generic tips that ignore your dog's breed, age and individual health profile.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-bg" id="features">
+  <div class="section-inner">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="eyebrow">What's inside</div>
+      <div class="section-title">Everything your dog needs. In one place.</div>
+      <div class="section-sub" style="margin:0 auto;">Built around the real pain points of real dog owners — not a generic pet tracker.</div>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card"><div class="feat-tag">Live tracking</div><div class="feat-icon">📊</div><div class="feat-title">Real-time health dashboard</div><div class="feat-desc">Monitor health score, activity, calories, hydration and medication — all in a beautiful daily overview.</div></div>
+      <div class="feat-card"><div class="feat-tag">Nutrition</div><div class="feat-icon">🍗</div><div class="feat-title">Meal & diet tracker</div><div class="feat-desc">Log every meal, track calories against your dog's breed-specific daily goal and spot patterns over time.</div></div>
+      <div class="feat-card"><div class="feat-tag">Early warning</div><div class="feat-icon">⚠️</div><div class="feat-title">AI symptom checker</div><div class="feat-desc">Select symptoms and get instant guidance — know whether to watch, call the vet or head in now.</div></div>
+      <div class="feat-card"><div class="feat-tag">Assessment</div><div class="feat-icon">🩺</div><div class="feat-title">Personalised health quiz</div><div class="feat-desc">6-question assessment gives breed-specific recommendations for nutrition, exercise and preventive care.</div></div>
+      <div class="feat-card"><div class="feat-tag">AI assistant</div><div class="feat-icon">💬</div><div class="feat-title">PawBot — 24/7 AI support</div><div class="feat-desc">Ask anything about your dog. Trained on veterinary knowledge and personalised to your dog's profile.</div></div>
+      <div class="feat-card"><div class="feat-tag">Downloadable</div><div class="feat-icon">📄</div><div class="feat-title">40-page interactive PDF guide</div><div class="feat-desc">Fillable companion guide — breed charts, vet visit log, vaccine record, nutrition tables and more.</div></div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank" class="btn btn-amber">Try PawGuard free for 7 days →</a>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD / APP STORES -->
+<section class="download-section" id="download">
+  <div class="download-inner">
+    <div>
+      <div class="eyebrow" style="color:rgba(255,255,255,0.5);">Mobile app</div>
+      <div class="download-title">PawGuard in your pocket — wherever your dog is.</div>
+      <div class="download-sub">Download the app for iOS or Android and track your dog's health on the go. All your data syncs across devices.</div>
+      <div class="store-btns">
+        <!-- UPDATE THESE LINKS ONCE YOUR APPS ARE LIVE ON THE STORES -->
+        <a href="https://apps.apple.com" target="_blank" class="store-btn-big" id="appStoreLink">
+          <div class="store-btn-icon">🍎</div>
+          <div class="store-btn-text">
+            <div class="store-btn-small">Download on the</div>
+            <div class="store-btn-big-label">App Store</div>
+          </div>
+        </a>
+        <a href="https://play.google.com" target="_blank" class="store-btn-big" id="playStoreLink">
+          <div class="store-btn-icon">▶</div>
+          <div class="store-btn-text">
+            <div class="store-btn-small">Get it on</div>
+            <div class="store-btn-big-label">Google Play</div>
+          </div>
+        </a>
+        <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank" class="btn btn-teal" style="justify-content:center;margin-top:8px;">
+          Or access via browser on Whop →
+        </a>
+      </div>
+    </div>
+    <div class="download-visual">
+      <div class="download-feat"><div class="df-icon">🔄</div><div class="df-text"><strong>Syncs across all devices</strong>Log on your phone, review on desktop. Always up to date.</div></div>
+      <div class="download-feat"><div class="df-icon">📵</div><div class="df-text"><strong>Works offline</strong>Log meals and walks even without signal. Syncs when reconnected.</div></div>
+      <div class="download-feat"><div class="df-icon">🔔</div><div class="df-text"><strong>Smart reminders</strong>Never miss a meal, medication or walk with gentle push notifications.</div></div>
+      <div class="download-feat"><div class="df-icon">🔒</div><div class="df-text"><strong>Your data is private</strong>Your dog's health data belongs to you. Always encrypted, never sold.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PDF GUIDE -->
+<section class="pdf-section">
+  <div class="pdf-inner">
+    <div class="pdf-visual">
+      <div class="pdf-cover">
+        <div style="font-size:36px;margin-bottom:8px;">🐾</div>
+        <div class="pdf-cover-title">PawGuard</div>
+        <div class="pdf-cover-sub">Ultimate Dog Health Companion Guide</div>
+      </div>
+      <div class="pdf-pages">
+        <div class="pdf-page-thumb"><div class="pdf-page-title">Dog Profile</div>Breed, weight, vet details, diet</div>
+        <div class="pdf-page-thumb"><div class="pdf-page-title">Weekly Tracker</div>Daily metrics log</div>
+        <div class="pdf-page-thumb"><div class="pdf-page-title">Breed Benchmarks</div>10 breeds — weight, calories, risks</div>
+        <div class="pdf-page-thumb"><div class="pdf-page-title">Symptom Guide</div>Triage reference chart</div>
+        <div class="pdf-page-thumb"><div class="pdf-page-title">Vet Visit Log</div>4 visit records</div>
+        <div class="pdf-page-thumb"><div class="pdf-page-title">Vaccine Record</div>Full vaccination tracker</div>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow">Included with Pro & Lifetime</div>
+      <div class="section-title">A 40-page guide your vet will wish you had sooner.</div>
+      <div class="section-sub" style="margin-bottom:28px;">The interactive PDF companion covers every aspect of your dog's health — fillable, printable and designed to take to every vet appointment.</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:32px;">
+        <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted);"><span style="color:var(--teal);font-weight:700;">✓</span> Breed-specific health benchmarks for 10 popular breeds</div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted);"><span style="color:var(--teal);font-weight:700;">✓</span> Toxic foods reference — 12 foods that can kill your dog</div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted);"><span style="color:var(--teal);font-weight:700;">✓</span> Weekly health tracker — 7-day grid, all key metrics</div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted);"><span style="color:var(--teal);font-weight:700;">✓</span> Calorie guide — 9 weight categories × 4 activity levels</div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted);"><span style="color:var(--teal);font-weight:700;">✓</span> Vet visit log — space for 4 complete visit records</div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted);"><span style="color:var(--teal);font-weight:700;">✓</span> Vaccination & medication record</div>
+      </div>
+      <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank" class="btn btn-primary">Get the PDF with Pro →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-inner" style="text-align:center;margin-bottom:48px;">
+    <div class="eyebrow">Pricing</div>
+    <div class="section-title">Simple, honest pricing.</div>
+    <div class="section-sub" style="margin:0 auto;">Start free. Upgrade when you're ready. Cancel anytime from your Whop account — no calls, no emails.</div>
+  </div>
+  <div class="pricing-grid">
+    <!-- FREE -->
+    <div class="price-card">
+      <div class="price-name">Free forever</div>
+      <div class="price-amount">$0</div>
+      <div class="price-period">No card needed</div>
+      <div class="price-trial">&nbsp;</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Dashboard preview</li>
+        <li>Symptom checker (3/day)</li>
+        <li>Basic meal log</li>
+        <li>Health quiz (1/month)</li>
+        <li class="disabled">PawBot AI (unlimited)</li>
+        <li class="disabled">Full tracking suite</li>
+        <li class="disabled">PDF guide</li>
+      </ul>
+      <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank" class="price-btn pb-outline">Get started free</a>
+    </div>
+    <!-- PRO -->
+    <div class="price-card featured">
+      <div class="featured-badge">⭐ Most popular</div>
+      <div class="price-name">Pro</div>
+      <div class="price-amount">$15</div>
+      <div class="price-period">per month</div>
+      <div class="price-trial">7-day free trial included</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Everything in Free</li>
+        <li>PawBot AI — unlimited</li>
+        <li>Complete health tracking</li>
+        <li>Habit calendar & streaks</li>
+        <li>40-page interactive PDF guide</li>
+        <li>Breed-specific action plans</li>
+        <li>Priority email support</li>
+      </ul>
+      <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank" class="price-btn pb-filled">Start 7-day free trial</a>
+    </div>
+    <!-- LIFETIME -->
+    <div class="price-card">
+      <div class="price-name">Lifetime access</div>
+      <div class="price-amount">$60</div>
+      <div class="price-period">one-time payment</div>
+      <div class="price-trial">Pay once, own forever</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Everything in Pro</li>
+        <li>Lifetime updates — free</li>
+        <li>Priority support always</li>
+        <li>Exclusive breed deep-dives</li>
+        <li>Early access to new features</li>
+        <li>Unlimited dog profiles</li>
+        <li>PDF guide + all future editions</li>
+      </ul>
+      <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank" class="price-btn pb-dark">Get lifetime access</a>
+    </div>
+  </div>
+  <div class="guarantee">🔒 30-day money-back guarantee &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; Secure checkout via Whop</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="section-inner">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="eyebrow">What owners say</div>
+      <div class="section-title">They came, they tracked, they saved on vet bills.</div>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"The symptom checker alone has saved me two unnecessary vet trips. It told me his lethargy was likely heat-related and gave me exactly what to do."</div><div class="testi-author"><div class="testi-avatar">👩</div><div><div class="testi-name">Sarah M.</div><div class="testi-breed">Labrador owner</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Finally a dog app that doesn't insult my intelligence. The meal tracker caught that I was overfeeding by 200kcal a day — Bella has lost 1.5kg in 2 months."</div><div class="testi-author"><div class="testi-avatar">👨</div><div><div class="testi-name">James T.</div><div class="testi-breed">French Bulldog owner</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"PawBot at midnight answered my question about my dog's weird cough better than any forum I've ever found. Calm, clear and actually helpful."</div><div class="testi-author"><div class="testi-avatar">👩</div><div><div class="testi-name">Keisha D.</div><div class="testi-breed">Border Collie owner</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div class="eyebrow">Questions</div>
+      <div class="section-title">Everything you need to know.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What is PawGuard exactly? <div class="toggle">+</div></div><div class="faq-a"><p>PawGuard is an interactive dog health companion — a web app you access from any device (phone, tablet, desktop) plus a downloadable 40-page PDF guide. It includes a daily health dashboard, meal tracker, symptom checker, personalised health quiz and 24/7 AI support from PawBot. No app download is required — it works in your browser.</p></div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I access it after buying? <div class="toggle">+</div></div><div class="faq-a"><p>After purchase on Whop, you'll get instant access to the PawGuard web app and a download link for the PDF guide — all inside your Whop account. You can also download the iOS or Android app once it's live on the stores (coming very soon).</p></div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Is PawBot replacing a vet? <div class="toggle">+</div></div><div class="faq-a"><p>No — PawBot is a knowledgeable AI companion, not a licensed veterinarian. It helps you understand what's happening and when to seek professional care. Think of it as a brilliant dog-loving friend who happens to know a lot about dog health. Always consult a vet for anything that persists or concerns you.</p></div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Does it work for all dog breeds? <div class="toggle">+</div></div><div class="faq-a"><p>Yes! When you set up your dog's profile you select their breed, and PawGuard customises nutrition goals, exercise targets and health benchmarks accordingly. The PDF guide includes breed-specific data for 10 of the most popular breeds, and the app works for any breed or mix.</p></div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I cancel my subscription? <div class="toggle">+</div></div><div class="faq-a"><p>Cancel anytime from your Whop account settings — no phone calls, no email requests, no waiting. Your access continues until the end of the current billing period. The Lifetime plan has no recurring charge.</p></div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Is there a money-back guarantee? <div class="toggle">+</div></div><div class="faq-a"><p>Yes — every plan comes with a 30-day money-back guarantee. If PawGuard isn't right for you within 30 days of purchase, contact us and we'll refund you in full. No questions asked.</p></div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">🐾 PawGuard</div>
+        <div class="footer-tagline">The ultimate digital companion for dog owners who go the extra mile for their dogs.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#download">Download app</a>
+        <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank">Buy on Whop</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="https://whop.com/pawguard/pawguard-landing-page/" target="_blank">PDF guide</a>
+        <a href="#faq">FAQ</a>
+        <a href="mailto:support@pawguard.app">Support</a>
+      </div>
+      <div class="footer-col">
+        <h4>Follow us</h4>
+        <a href="https://www.instagram.com/" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/" target="_blank">TikTok</a>
+        <a href="https://www.reddit.com/r/dogs/" target="_blank">Reddit</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 PawGuard · All rights reserved · Zamani Ntuli</div>
+      <div class="footer-copy">Payments & checkout powered by <a href="https://whop.com" target="_blank" style="color:rgba(255,255,255,0.4);">Whop</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(el){
+  el.classList.toggle('open');
+  el.querySelector('.faq-a').classList.toggle('open');
+}
+function toggleMobileNav(){
+  const links = document.querySelector('.nav-links');
+  if(links.style.display==='flex'){links.style.display='none';}
+  else{links.style.display='flex';links.style.flexDirection='column';links.style.position='fixed';links.style.top='64px';links.style.left='0';links.style.right='0';links.style.background='rgba(253,250,245,0.98)';links.style.padding='20px 5vw';links.style.borderBottom='0.5px solid rgba(92,61,30,0.12)';}
+}
+// Smooth scroll nav highlight
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('section[id]').forEach(s=>{
+    const rect=s.getBoundingClientRect();
+    if(rect.top<=80&&rect.bottom>=80){
+      document.querySelectorAll('.nav-links a').forEach(a=>a.style.color='');
+      const link=document.querySelector(`.nav-links a[href="#${s.id}"]`);
+      if(link)link.style.color='var(--amber)';
+    }
+  });
+});
+</script>
+<!-- TIDIO CHAT WIDGET — paste your Tidio script here once you have your URL -->
+<!-- <script src="//code.tidio.co/YOUR_TIDIO_KEY.js" async></script> -->
+</body>
+</html>
